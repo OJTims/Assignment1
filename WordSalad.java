@@ -88,6 +88,7 @@ public class WordSalad implements Iterable<String> {
     // Method stubs to be completed for the assignment.
     // See the assignment description for specification of their behaviour.
         
+	//TOM CURRENTLY WORKING ON THIS
     public WordSalad[] distribute(int k) {
         return null;
     }
