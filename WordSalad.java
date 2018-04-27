@@ -90,6 +90,15 @@ public class WordSalad implements Iterable<String> {
         
 	//TOM CURRENTLY WORKING ON THIS
     public WordSalad[] distribute(int k) {
+	WordSalad[] s = new WordSalad[k];
+        int c = 0;
+        for(String word:words){
+            s[c].add(word);
+            c++;
+            if(c>=k){
+                c=0;
+            }
+        }
         return null;
     }
         
