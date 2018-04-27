@@ -13,3 +13,9 @@ create essential methods:
 create recommended methods:
   public WordSalad[] split(int k)
   public static WordSalad[] recombine(WordSalad[] blocks, int k)
+
+
+
+Currently working on:
+Tom:
+  distribute()
