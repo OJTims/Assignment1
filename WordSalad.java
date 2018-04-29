@@ -88,16 +88,13 @@ public class WordSalad implements Iterable<String> {
     // Method stubs to be completed for the assignment.
     // See the assignment description for specification of their behaviour.
         
-	//TOM CURRENTLY WORKING ON THIS
     public WordSalad[] distribute(int k) {
         WordSalad[] s = new WordSalad[k];
-        int g = 0;
-        WordNode w = first;
-        
-	//filling the WordSalad Array with empty WordSalad's
 	for (int c=0;c<k;c++){
             s[c] = new WordSalad();
         }
+        int g = 0;
+        WordNode w = first;
 	    
         while (w != null){
             s[g].addLast(w.word);
@@ -106,6 +103,7 @@ public class WordSalad implements Iterable<String> {
             if (g == k){
                 g = 0;
             }
+	}
         return s;
     }
         
