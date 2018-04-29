@@ -90,7 +90,23 @@ public class WordSalad implements Iterable<String> {
         
 	//TOM CURRENTLY WORKING ON THIS
     public WordSalad[] distribute(int k) {
-        return null;
+        WordSalad[] s = new WordSalad[k];
+        int g = 0;
+        WordNode w = first;
+        
+	//filling the WordSalad Array with empty WordSalad's
+	for (int c=0;c<k;c++){
+            s[c] = new WordSalad();
+        }
+	    
+        while (w != null){
+            s[g].addLast(w.word);
+            w = w.next;
+            g++;
+            if (g == k){
+                g = 0;
+            }
+        return s;
     }
         
     public WordSalad[] chop(int k) {
