@@ -93,11 +93,9 @@ public class WordSalad implements Iterable<String> {
         int g = 0;
         WordNode w = first;
         
-	//filling the WordSalad Array with empty WordSalad's
-	for (int c=0;c<k;c++){
+		for (int c=0;c<k;c++){
             s[c] = new WordSalad();
-        }
-	    
+        }	    
         while (w != null){
             s[g].addLast(w.word);
             w = w.next;
@@ -106,8 +104,10 @@ public class WordSalad implements Iterable<String> {
                 g = 0;
             }
         return s;
+    	}
     }
-        
+    
+    
     public WordSalad[] chop(int k) {
         return null;
     }
