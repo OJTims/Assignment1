@@ -18,4 +18,7 @@ create recommended methods:
 
 Currently working on:
 Tom:
+  chop()
+
+Finished:
   distribute()
