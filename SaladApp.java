@@ -39,6 +39,7 @@ public class SaladApp {
         System.err.println(app.info());
         Scanner input = new Scanner(System.in);
         while (input.hasNextLine()) {
+	    app.load("words.txt");
             app.handleLine(input.nextLine());
         }
     }
