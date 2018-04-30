@@ -89,6 +89,10 @@ public class WordSalad implements Iterable<String> {
     // See the assignment description for specification of their behaviour.
         
     public WordSalad[] distribute(int k) {
+	//error checking if 0 blocks or negative number of blocks are given
+	if (k == 0 || k < 0){
+	    return null;
+	}
         WordSalad[] s = new WordSalad[k];
 	for (int c=0;c<k;c++){
             s[c] = new WordSalad();
