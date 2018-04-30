@@ -12,7 +12,7 @@ public class WordSalad implements Iterable<String> {
 
     private WordNode first;
     private WordNode last;
-     
+
     public WordSalad() {
         this.first = null;
         this.last = null;
@@ -41,47 +41,47 @@ public class WordSalad implements Iterable<String> {
         }
         WordNode newLast = new WordNode(word, null);
         this.last.next = newLast;
-        this.last = newLast; 
+        this.last = newLast;
     }
 
     public int size() {
-	int size = 1;
-	for(WordNode n = first; n.next != null; n = n.next)
-	    size++;     
-	return size;
-}
-  
+	     int size = 1;
+	     for(WordNode n = first; n.next != null; n = n.next)
+	     size++;
+	     return size;
+    }
+
     private class WordNode {
         private String word;
         private WordNode next;
-                
+
         private WordNode(String word, WordNode next) {
             this.word = word;
             this.next = next;
         }
-        
+
     }
-  
+
     public java.util.Iterator<String> iterator() {
         return new java.util.Iterator<String>() {
             private WordNode current = first;
-      
+
             public boolean hasNext() {
                 return current != null;
             }
-      
+
             public String next() {
                 String result = current.word;
                 current = current.next;
                 return result;
             }
-      
+
             public void remove() {
                 throw new UnsupportedOperationException();
             }
         };
     }
-                
+
     public String toString() {
         StringBuilder result = new StringBuilder("[");
         WordNode node = first;
@@ -96,39 +96,38 @@ public class WordSalad implements Iterable<String> {
 
     // Method stubs to be completed for the assignment.
     // See the assignment description for specification of their behaviour.
-    
+
     public WordSalad[] distribute(int k) {
-	//error checking
-	//if k is zero
-	//if k is negative
-	//if k is greater than the number of words in the file
-	if (k == 0 || k < 0 || k > this.size()){
-	    return null;
-	}
-        WordSalad[] s = new WordSalad[k];
-	for (int c=0;c<k;c++){
-            s[c] = new WordSalad();
-        }
-        int g = 0;
-        WordNode w = first;
-	
-        while (w != null){
-            s[g].addLast(w.word);
-            w = w.next;
-            g++;
-            if (g == k){
-                g = 0;
-            }
-	}
-        return s;
+      //error checking
+	    //if k is zero
+	    //if k is negative
+	    //if k is greater than the number of words in the file
+	    if (k == 0 || k < 0 || k > this.size()){
+	       return null;
+	    }
+      WordSalad[] s = new WordSalad[k];
+	    for (int c=0;c<k;c++){
+          s[c] = new WordSalad();
+      }
+      int g = 0;
+      WordNode w = first;
+
+      while (w != null){
+          s[g].addLast(w.word);
+          w = w.next;
+          g++;
+          if (g == k){
+              g = 0;
+          }
+	    }
+      return s;
     }
-    
-    
+
+
     public WordSalad[] chop(int k) {
 	WordSalad[] result = new WordSalad[k];
 	int size = this.size();
 
-	//error checking for more blocks than words or no blocks
 	if (k > size || k == 0){
 	    return null;
 	}
@@ -155,20 +154,28 @@ public class WordSalad implements Iterable<String> {
 	    ind++;
 	}
 	return result;
-    }
-        
+}
+
+    //not required
     public WordSalad[] split(int k) {
-        return null;
+      return null;
     }
-        
+
+    //required
+    //opposite of distribute
     public static WordSalad merge(WordSalad[] blocks) {
-        return null;
+      WordSalad result = new WordSalad();
+      //refer to psudo-code for implementation
+        return result;
     }
-        
+
+    //required
+    //opposite of chop
     public static WordSalad join(WordSalad[] blocks) {
         return null;
     }
 
+    //not required
     public static WordSalad recombine(WordSalad[] blocks, int k) {
         return null;
     }
