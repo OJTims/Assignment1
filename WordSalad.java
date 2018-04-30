@@ -1,6 +1,8 @@
 /* File: WordSalad.java - April 2018 */
 package week09;
 
+import java.util.*;
+
 /**
  *  Skeleton implementation of the WordSalad class.
  *
@@ -41,6 +43,13 @@ public class WordSalad implements Iterable<String> {
         this.last.next = newLast;
         this.last = newLast; 
     }
+
+    public int size() {
+	int size = 1;
+	for(WordNode n = first; n.next != null; n = n.next)
+	    size++;     
+	return size;
+}
   
     private class WordNode {
         private String word;
@@ -87,10 +96,13 @@ public class WordSalad implements Iterable<String> {
 
     // Method stubs to be completed for the assignment.
     // See the assignment description for specification of their behaviour.
-        
+    
     public WordSalad[] distribute(int k) {
-	//error checking if 0 blocks or negative number of blocks are given
-	if (k == 0 || k < 0){
+	//error checking
+	//if k is zero
+	//if k is negative
+	//if k is greater than the number of words in the file
+	if (k == 0 || k < 0 || k > this.size()){
 	    return null;
 	}
         WordSalad[] s = new WordSalad[k];
@@ -99,7 +111,7 @@ public class WordSalad implements Iterable<String> {
         }
         int g = 0;
         WordNode w = first;
-	    
+	
         while (w != null){
             s[g].addLast(w.word);
             w = w.next;
@@ -110,9 +122,39 @@ public class WordSalad implements Iterable<String> {
 	}
         return s;
     }
-        
+    
+    
     public WordSalad[] chop(int k) {
-        return null;
+	WordSalad[] result = new WordSalad[k];
+	int size = this.size();
+
+	//error checking for more blocks than words or no blocks
+	if (k > size || k == 0){
+	    return null;
+	}
+	int rem = size % k;
+	int s = size / k;
+	List<Integer> nums = new ArrayList<>();
+	for (int i=0;i<k;i++){
+	    nums.add(s);
+	}
+	for (int i=0;i<rem;i++){
+	    nums.set(i, nums.get(i)+1);
+	}
+	WordNode w = this.first;
+	int ind = 0;
+
+	for (int i:nums){
+	    int g = i;
+	    result[ind] = new WordSalad();
+	    do{
+		result[ind].addLast(w.word);
+		w = w.next;
+		g-=1;
+	    }while (g>0);
+	    ind++;
+	}
+	return result;
     }
         
     public WordSalad[] split(int k) {
