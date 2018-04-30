@@ -1,6 +1,8 @@
 /* File: WordSalad.java - April 2018 */
 package week09;
 
+import java.util.*;
+
 /**
  *  Skeleton implementation of the WordSalad class.
  *
@@ -41,6 +43,13 @@ public class WordSalad implements Iterable<String> {
         this.last.next = newLast;
         this.last = newLast; 
     }
+
+    public int size() {
+	int size = 1;
+	for(WordNode n = first; n.next != null; n = n.next)
+	    size++;     
+	return size;
+}
   
     private class WordNode {
         private String word;
@@ -89,27 +98,56 @@ public class WordSalad implements Iterable<String> {
     // See the assignment description for specification of their behaviour.
     
     public WordSalad[] distribute(int k) {
-        WordSalad[] s = new WordSalad[k];
+        WordSalad[] result = new WordSalad[k];
         int g = 0;
         WordNode w = first;
-        
-		for (int c=0;c<k;c++){
-            s[c] = new WordSalad();
-        }	    
+	
+	for (int c=0;c<k;c++){
+            result[c] = new WordSalad();
+        }
         while (w != null){
-            s[g].addLast(w.word);
+            result[g].addLast(w.word);
             w = w.next;
             g++;
             if (g == k){
                 g = 0;
             }
-        return s;
     	}
+	return result;	
     }
     
     
     public WordSalad[] chop(int k) {
-        return null;
+	WordSalad[] result = new WordSalad[k];
+	int size = this.size();
+
+	//error checking for more blocks than words or no blocks
+	if (k > size || k == 0){
+	    return null;
+	}
+	int rem = size % k;
+	int s = size / k;
+	List<Integer> nums = new ArrayList<>();
+	for (int i=0;i<k;i++){
+	    nums.add(s);
+	}
+	for (int i=0;i<rem;i++){
+	    nums.set(i, nums.get(i)+1);
+	}
+	WordNode w = this.first;
+	int ind = 0;
+
+	for (int i:nums){
+	    int g = i;
+	    result[ind] = new WordSalad();
+	    do{
+		result[ind].addLast(w.word);
+		w = w.next;
+		g-=1;
+	    }while (g>0);
+	    ind++;
+	}
+	return result;
     }
         
     public WordSalad[] split(int k) {
