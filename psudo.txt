@@ -1,0 +1,35 @@
+def evenDivide(num, div):
+    splits = []
+    sNum = str(num/div)
+    remainder = num % div
+    #print "Remainder is " + str(remainder)
+    integer = num / div
+---------------------------------------------------------
+return (integer, remainder);
+----------
+splits = []
+for i in range(div):
+   splits.append(integer)
+for i in range(remainder):
+   splits[i]+=1
+---------------------------------------------------------
+    #print "Integer is " + str(integer)
+    totRemainder = round(remainder * div, 2)
+    #print "Total Remainder is " + str(totRemainder)
+    for index in range(div):
+        if (totRemainder > 0):
+            totRemainder -= 1 if (index%2 == 0) else 0
+            if (index % 2 == 0):
+                splits.append(int(integer + 1)) 
+            else:
+                splits.append(int(integer))
+        else:
+            splits.append(int(integer))
+    for index in range(div):
+        if(totRemainder > 0):
+            if (index % 2 == 1):
+                splits[index] += 1
+                totRemainder -= 1
+
+    return splits
+ 
