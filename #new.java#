@@ -8,7 +8,7 @@ import java.util.*;
  *
  *  @author Michael Albert
  */
-public class WordSalad implements Iterable <String> {
+public class WordSalad implements Iterable < String > {
 
     private WordNode first;
     private WordNode last;
@@ -18,7 +18,7 @@ public class WordSalad implements Iterable <String> {
         this.last = null;
     }
 
-    public WordSalad(List <String> words) {
+    public WordSalad(java.util.List < String > words) {
         for (String word: words) {
             addLast(word);
         }
@@ -44,17 +44,6 @@ public class WordSalad implements Iterable <String> {
         this.last = newLast;
     }
 
-    //added methods:
-    public int size() {
-        int size = 1;
-        WordNode w = this.first;
-        while (w != null){
-            size++;
-            w = w.next;
-        }
-        return size;
-    }
-
     private class WordNode {
         private String word;
         private WordNode next;
@@ -63,11 +52,11 @@ public class WordSalad implements Iterable <String> {
             this.word = word;
             this.next = next;
         }
+
     }
 
-    // for iterating through WordSalad's
-    public Iterator<String> iterator() {
-        return new Iterator <String> () {
+    public Iterator < String > iterator() {
+        return new Iterator < String > () {
             private WordNode current = first;
 
             public boolean hasNext() {
@@ -97,6 +86,25 @@ public class WordSalad implements Iterable <String> {
         return result.toString() + "]";
     }
 
+    //added methods:
+
+    public int size() {
+        int size = 1;
+        for (WordNode n = first; n.next != null; n = n.next)
+            size++;
+        return size;
+    }
+
+    public WordNode getFirst() {
+        return this.first;
+    }
+
+    public WordNode getLast() {
+        return this.last;
+    }
+
+
+
     // Method stubs to be completed for the assignment.
     // See the assignment description for specification of their behaviour.
 
@@ -105,11 +113,11 @@ public class WordSalad implements Iterable <String> {
         //if k is zero
         //if k is negative
         //if k is greater than the number of words in the file
-        if (k == 0 || k<0 || k>this.size()) {
+        if (k == 0 || k < 0 || k > this.size()) {
             return null;
         }
         WordSalad[] s = new WordSalad[k];
-        for (int c = 0; c<k; c++) {
+        for (int c = 0; c < k; c++) {
             s[c] = new WordSalad();
         }
         int g = 0;
@@ -128,37 +136,37 @@ public class WordSalad implements Iterable <String> {
 
 
     public WordSalad[] chop(int k) {
-	WordSalad[] result = new WordSalad[k];
-	int size = this.size()-1;
-	//error checking for more blocks than words or no blocks
-	if (k > size || k == 0){
-	    return null;
-	}
-	int rem = size % k;
-	int s = size / k;
-	List<Integer> nums = new ArrayList<>();
-	for (int i=0;i<k;i++){
-	    nums.add(s);
-	}
-	for (int i=0;i<rem;i++){
-	    nums.set(i, nums.get(i)+1);
-	}
-	WordNode w = this.first;
-	int ind = 0;
-        
-	for (int i:nums){
-	    int g = i;
-	    result[ind] = new WordSalad();
-	    do{
-		result[ind].addLast(w.word); //w.word
-		w = w.next;
-		g-=1;
-	    }while (g>0);
-	    ind++;
-	}
+        WordSalad[] result = new WordSalad[k];
+        int size = this.size();
+
+        if (k > size || k == 0) {
+            return null;
+        }
+        int rem = size % k;
+        int s = size / k;
+        List < Integer > nums = new ArrayList < > ();
+        for (int i = 0; i < k; i++) {
+            nums.add(s);
+        }
+        for (int i = 0; i < rem; i++) {
+            nums.set(i, nums.get(i) + 1);
+        }
+        WordNode w = this.first;
+        int ind = 0;
+
+        for (int i: nums) {
+            int g = i;
+            result[ind] = new WordSalad();
+            do {
+                result[ind].addLast(w.word);
+                w = w.next;
+                g -= 1;
+            } while (g > 0);
+            ind++;
+        }
         return result;
     }
-    
+
     //not required
     public WordSalad[] split(int k) {
         return null;
@@ -166,28 +174,11 @@ public class WordSalad implements Iterable <String> {
 
     //required
     //opposite of distribute
+    //required iteration
     public static WordSalad merge(WordSalad[] blocks) {
         WordSalad result = new WordSalad();
-        int c = 0;//overall counter
-        //calculating length of blocks
-        int len = 0;
-        for (WordSalad s : blocks){
-            for (String word : s){
-                len++;
-            }
-        }
-        while (result.size() < len){
-            for (WordSalad salad : blocks){
-                int v = 0;
-                for (String w : salad){
-                    if (v == c){
-                        result.addLast(w);
-                    }
-                    v++;
-                }
-            }
-            c++;
-        }
+        //if (iterable something) statement
+        result.addLast(this.first.word);
         return result;
     }
 
