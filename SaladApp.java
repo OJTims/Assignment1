@@ -58,7 +58,7 @@ public class SaladApp {
             "Recombine N  - recombine multiple WS blocks using parameter N\n" +
             "Load FILE    - loads the contents of FILE into WS\n" +
             "Write FILE   - writes the current WS to FILE\n" +
-            "\nSingle: " + single + "]\nMulti: " + Arrays.deepToString(multi)+"]");
+            "\nSingle: " + single + "\nMulti: " + Arrays.deepToString(multi);
     }
 
     /**

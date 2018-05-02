@@ -178,6 +178,7 @@ public class WordSalad implements Iterable <String> {
 
     //required
     //opposite of distribute
+    //FAILS WITH LETTERS
     public static WordSalad merge(WordSalad[] blocks) {
         WordSalad result = new WordSalad();
         int c = 0;//overall counter
@@ -206,7 +207,16 @@ public class WordSalad implements Iterable <String> {
     //required
     //opposite of chop
     public static WordSalad join(WordSalad[] blocks) {
-        return null;
+        WordSalad result = new WordSalad();
+        List<String> r = new ArrayList<String>();
+        for (WordSalad salad : blocks){
+            WordNode n = salad.first;
+            while (n != null){
+                result.addLast(n.word);
+                n = n.next;
+            }
+        }
+        return result;
     }
 
     //not required
