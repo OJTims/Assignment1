@@ -1,6 +1,6 @@
 # Assignment1
 
-This repository is for a Computer Science Group Assignment
+This repository contains the files for a Computer Science Group Assignment involving singly linked lists.
 
 The Task:
 
@@ -17,8 +17,10 @@ create recommended methods:
 
 
 Currently working on:
-Tom:
-  chop()
+join()
+split()
 
 Finished:
   distribute()
+  chop()
+  merge()
