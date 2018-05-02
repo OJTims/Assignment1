@@ -102,7 +102,7 @@ public class WordSalad implements Iterable <String> {
 
     public WordSalad[] distribute(int k) {
         //error checking
-        if (k == 0 || k<0 || k>this.size()) {
+        if (k == 0 || k<0 || k>this.size()-1) {
             return null;
         }
         WordSalad[] s = new WordSalad[k];
@@ -178,23 +178,31 @@ public class WordSalad implements Iterable <String> {
 
     //required
     //opposite of distribute
+    //FAILS WITH LETTERS
     public static WordSalad merge(WordSalad[] blocks) {
         WordSalad result = new WordSalad();
         int c = 0;//overall counter
         //calculating length of blocks
-        int len = 0;
+        int len = 1;
         for (WordSalad s : blocks){
             for (String word : s){
                 len++;
             }
         }
         while (result.size() < len){
+            //System.out.println("while loop");
             for (WordSalad salad : blocks){
+                //System.out.println("for loop, salad: "+salad);
                 int v = 0;
                 for (String w : salad){
+                    //System.out.println("v: "+v);
+                    //System.out.println("c: "+c);
+                    //System.out.println("w: "+w);
                     if (v == c){
+                        //System.out.println(v+" == "+c+", adding: "+w);
                         result.addLast(w);
                     }
+                    //System.out.println("----------------------------");
                     v++;
                 }
             }
@@ -206,7 +214,16 @@ public class WordSalad implements Iterable <String> {
     //required
     //opposite of chop
     public static WordSalad join(WordSalad[] blocks) {
-        return null;
+        WordSalad result = new WordSalad();
+        List<String> r = new ArrayList<String>();
+        for (WordSalad salad : blocks){
+            WordNode n = salad.first;
+            while (n != null){
+                result.addLast(n.word);
+                n = n.next;
+            }
+        }
+        return result;
     }
 
     //not required
@@ -215,3 +232,9 @@ public class WordSalad implements Iterable <String> {
     }
 
 }
+
+
+
+
+// Single: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R |
+// Single: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R
