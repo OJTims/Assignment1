@@ -102,9 +102,6 @@ public class WordSalad implements Iterable <String> {
 
     public WordSalad[] distribute(int k) {
         //error checking
-        //if k is zero
-        //if k is negative
-        //if k is greater than the number of words in the file
         if (k == 0 || k<0 || k>this.size()) {
             return null;
         }
@@ -114,7 +111,6 @@ public class WordSalad implements Iterable <String> {
         }
         int g = 0;
         WordNode w = first;
-
         while (w != null) {
             s[g].addLast(w.word);
             w = w.next;
@@ -160,8 +156,24 @@ public class WordSalad implements Iterable <String> {
     }
     
     //not required
+    //works as if distributing 
     public WordSalad[] split(int k) {
-        return null;
+        WordSalad[] dist = this.distribute(k);
+        WordSalad[] result = new WordSalad[k];
+        List<String> r = new ArrayList<String>();
+        int ind = 0;
+        for (WordSalad salad : dist){
+            WordNode n = salad.first;
+            while (n != null){
+                r.add(n.word);
+                n = n.next;
+            }
+            result[ind] = new WordSalad(r);
+            r.clear();
+            ind++;
+            //need to set dist to  a WordSalad and distribute it and repeat the above code
+        }
+        return result;
     }
 
     //required
