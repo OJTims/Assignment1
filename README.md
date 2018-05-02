@@ -17,10 +17,10 @@ create recommended methods:
 
 
 Currently working on:
-join()
 split()
 
 Finished:
   distribute()
   chop()
   merge()
+  join()
