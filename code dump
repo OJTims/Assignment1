@@ -1,0 +1,51 @@
+
+public class Blah{
+    public WordSalad[] split(int k){
+        WordSalad[] result = new WordSalad[resList.size()];
+        int saladLen = size();
+        int ind = 0;
+        WordSalad t = new WordSalad();
+        
+        while (saladLen > 0){
+            WordNode n = this.first;
+            int numW = (int) Math.ceil(saladLen / k);
+            for (int i=0;i<numW;i++){
+                temp.addLast(n.word);
+                deleteNode(n);
+                n = moveNode(k, n);
+            }
+            saladLen = size();
+            result[ind] = temp;
+            temp = new WordSalad();
+            ind++;
+        }
+        return result;
+    }
+
+    public void deleteNode(WordNode n){
+        WordNode c = first;
+        //if the first node is to be deleted
+        if (c.equals(n)){
+            this.first = this.first.next;
+            return;
+        }
+        while (!(c.next.equals(n)) && (c.next != null)){ //!c.next.equals(n)
+            c = c.next;
+        }
+        if (c.next == null){
+            return;
+        }
+        if (c.next <= 0){
+            throw new NullPointerException("Enter a positive, non zero value");
+        }
+        c.next = n.next;
+    }
+
+    public boolean moveNode(int num, WordNode nodeIn){
+        WordNode n = nodeIn;
+        for (int i=0;(i<num && n.next != null);i++){
+            n = n.next;
+        }
+        return n;
+    }
+

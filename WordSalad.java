@@ -47,6 +47,10 @@ public class WordSalad implements Iterable <String> {
 
     //added this method:
     public int size() {
+        if (this.first == null){
+            return 0;
+        }
+        
         int size = 1;
         WordNode w = this.first;
         while (w != null){
@@ -54,6 +58,30 @@ public class WordSalad implements Iterable <String> {
             w = w.next;
         }
         return size;
+    }
+
+    public void deleteNode(WordNode n){
+        WordNode c = first;
+        //if the first node is to be deleted
+        if (c.equals(n)){
+            this.first = this.first.next;
+            return;
+        }
+        while (!(c.next.equals(n)) && (c.next != null)){ //!c.next.equals(n)
+            c = c.next;
+        }
+        if (c.next == null){
+            return;
+        }
+        c.next = n.next;
+    }
+
+    public WordNode moveNode(int num, WordNode nodeIn){
+        WordNode n = nodeIn;
+        for (int i=0;(i<num && n.next != null);i++){
+            n = n.next;
+        }
+        return n;
     }
 
     private class WordNode {
@@ -99,16 +127,20 @@ public class WordSalad implements Iterable <String> {
 
 
     public WordSalad[] distribute(int k) {
-        if (k == 0 || k<0 ){//|| k>this.size()-1) {
+        if (k<=0){
             throw new NullPointerException("Enter a valid block size");
         }
-        WordSalad[] result = new WordSalad[k];
-        for (int c = 0; c<k; c++) {
-            result[c] = new WordSalad();
+        if (k > this.size()){
+            return distribute(this.size());
         }
+
+        WordSalad[] result = new WordSalad[k];
         int g = 0;
         WordNode w = first;
         while (w != null) {
+            if (result[g] == null){
+                result[g] = new WordSalad();
+            }
             result[g].addLast(w.word);
             w = w.next;
             g++;
@@ -151,32 +183,30 @@ public class WordSalad implements Iterable <String> {
         return result;
     }
     
-    //not required ------------------------------------------------------------------
-    public WordSalad[] split(int k) {
-        WordSalad[] result = new WordSalad[k];
-        WordSalad[] s = new WordSalad[k];
-        WordSalad hold = this;
-        
+    public WordSalad[] split(int k){
+        WordSalad[] result = new WordSalad[this.size()];
+        int saladLen = size();
         int ind = 0;
-        while (hold != null){
-            s = hold.distribute(k);
-            if (ind > k){
-                break;
+        WordSalad t = new WordSalad();
+        
+        while (saladLen > 0){
+            System.out.println("ind: "+ind);
+            WordNode n = this.first;
+            int numW = (int) Math.ceil(saladLen / k);
+            for (int i=0;i<numW;i++){
+                System.out.println("\ni "+i);
+                t.addLast(n.word);
+                deleteNode(n);
+                n = moveNode(k, n);
             }
-            for (String salad : s[ind]){
-                System.out.println("salad: "+salad);
-                result[ind] = new WordSalad();
-                result[ind].addLast(salad);
-            }
-            //s = Arrays.copyOfRange(s, 1, s.length);
-            hold = merge(s);
-            ind+=1;
+            saladLen = size(); //-------------
+            result[ind] = t;
+            t = new WordSalad();
+            ind++;
         }
         return result;
     }
 
-    //required
-    //opposite of distribute
     public static WordSalad merge(WordSalad[] blocks) {
         WordSalad result = new WordSalad();
         int c = 0;
@@ -201,8 +231,6 @@ public class WordSalad implements Iterable <String> {
         return result;
     }
 
-    //required
-    //opposite of chop
     public static WordSalad join(WordSalad[] blocks) {
         WordSalad result = new WordSalad();
         List<String> r = new ArrayList<String>();
@@ -216,8 +244,9 @@ public class WordSalad implements Iterable <String> {
         return result;
     }
 
-    //not required
     public static WordSalad recombine(WordSalad[] blocks, int k) {
         return null;
     }
 }
+
+

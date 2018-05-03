@@ -1,196 +1,33 @@
-/* File: WordSalad.java - April 2018 */
-package week09;
-
-import java.util.*;
-
-/**
- *  Skeleton implementation of the WordSalad class.
- *
- *  @author Michael Albert
- */
-public class WordSalad implements Iterable < String > {
-
-    private WordNode first;
-    private WordNode last;
-
-    public WordSalad() {
-        this.first = null;
-        this.last = null;
-    }
-
-    public WordSalad(java.util.List < String > words) {
-        for (String word: words) {
-            addLast(word);
-        }
-    }
-
-    public void add(String word) {
-        if (this.first == null) {
-            this.first = new WordNode(word, null);
-            this.last = this.first;
-            return;
-        }
-        WordNode newFirst = new WordNode(word, this.first);
-        this.first = newFirst;
-    }
-
-    public void addLast(String word) {
-        if (this.first == null) {
-            add(word);
-            return;
-        }
-        WordNode newLast = new WordNode(word, null);
-        this.last.next = newLast;
-        this.last = newLast;
-    }
-
-    private class WordNode {
-        private String word;
-        private WordNode next;
-
-        private WordNode(String word, WordNode next) {
-            this.word = word;
-            this.next = next;
-        }
-
-    }
-
-    public Iterator < String > iterator() {
-        return new Iterator < String > () {
-            private WordNode current = first;
-
-            public boolean hasNext() {
-                return current != null;
-            }
-
-            public String next() {
-                String result = current.word;
-                current = current.next;
-                return result;
-            }
-
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-    }
-
-    public String toString() {
-        StringBuilder result = new StringBuilder("[");
-        WordNode node = first;
-        while (node != null) {
-            result.append(node.word);
-            result.append(node.next == null ? "" : ", ");
-            node = node.next;
-        }
-        return result.toString() + "]";
-    }
-
-    //added methods:
-
-    public int size() {
-        int size = 1;
-        for (WordNode n = first; n.next != null; n = n.next)
-            size++;
-        return size;
-    }
-
-    public WordNode getFirst() {
-        return this.first;
-    }
-
-    public WordNode getLast() {
-        return this.last;
-    }
-
-
-
-    // Method stubs to be completed for the assignment.
-    // See the assignment description for specification of their behaviour.
-
-    public WordSalad[] distribute(int k) {
-        //error checking
-        //if k is zero
-        //if k is negative
-        //if k is greater than the number of words in the file
-        if (k == 0 || k < 0 || k > this.size()) {
-            return null;
-        }
-        WordSalad[] s = new WordSalad[k];
-        for (int c = 0; c < k; c++) {
-            s[c] = new WordSalad();
-        }
-        int g = 0;
-        WordNode w = first;
-
-        while (w != null) {
-            s[g].addLast(w.word);
-            w = w.next;
-            g++;
-            if (g == k) {
-                g = 0;
-            }
-        }
-        return s;
-    }
-
-
-    public WordSalad[] chop(int k) {
-        WordSalad[] result = new WordSalad[k];
-        int size = this.size();
-
-        if (k > size || k == 0) {
-            return null;
-        }
-        int rem = size % k;
-        int s = size / k;
-        List < Integer > nums = new ArrayList < > ();
-        for (int i = 0; i < k; i++) {
-            nums.add(s);
-        }
-        for (int i = 0; i < rem; i++) {
-            nums.set(i, nums.get(i) + 1);
-        }
-        WordNode w = this.first;
-        int ind = 0;
-
-        for (int i: nums) {
-            int g = i;
-            result[ind] = new WordSalad();
-            do {
-                result[ind].addLast(w.word);
-                w = w.next;
-                g -= 1;
-            } while (g > 0);
-            ind++;
-        }
-        return result;
-    }
-
-    //not required
-    public WordSalad[] split(int k) {
-        return null;
-    }
-
-    //required
-    //opposite of distribute
-    //required iteration
-    public static WordSalad merge(WordSalad[] blocks) {
-        WordSalad result = new WordSalad();
-        //if (iterable something) statement
-        result.addLast(this.first.word);
-        return result;
-    }
-
-    //required
-    //opposite of chop
-    public static WordSalad join(WordSalad[] blocks) {
-        return null;
-    }
-
-    //not required
-    public static WordSalad recombine(WordSalad[] blocks, int k) {
-        return null;
-    }
-
-}
+public WordSalad[] split(int k) {
+    -        //get initial length and array size needed to store split WordSalad
+        -        double length = count();
+    -        int arraySize = arraySize(length, k);
+    -        WordSalad[] split = new WordSalad[arraySize];
+    -        WordSalad temp = new WordSalad();
+    -        //index for entering into array
+        -        int index = 0;
+    -        //while there are still items in the current WordSalad
+        -        while (length > 0) {
+        -            //set current to first
+            -            WordNode curr = this.first;
+        -            //get number of words for this part of split
+            -            int numberOfWords = (int)Math.ceil(length / k); // TODO explain length / k up top
+        -
+            -            for (int i = 0; i < numberOfWords; i++) {
+            -                //add the current word to the temporary WordSalad
+                -                //then remove the node from the this WordSalad
+                -                //and jump forward k spots to the next node
+                -                //needed for this split
+                -                temp.addLast(curr.word);
+            -                remove(curr);
+            -                curr = jumpForward(curr, k);
+            -            }
+        -            //update the length of this WordSalad
+            -            length = count();
+        -            //add the temporary WordSalad to the array
+            -            //and create a new one for the next iteration
+            -            split[index++] = temp;
+        -            temp = new WordSalad();
+        -        }
+    -        return split;
+    -    }
