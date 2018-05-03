@@ -2,6 +2,7 @@
 package week09;
 
 import java.util.*;
+import java.util.ArrayList;
 
 /**
  *  Skeleton implementation of the WordSalad class.
@@ -44,7 +45,7 @@ public class WordSalad implements Iterable <String> {
         this.last = newLast;
     }
 
-    //added methods:
+    //added this method:
     public int size() {
         int size = 1;
         WordNode w = this.first;
@@ -65,7 +66,6 @@ public class WordSalad implements Iterable <String> {
         }
     }
 
-    // for iterating through WordSalad's
     public Iterator<String> iterator() {
         return new Iterator <String> () {
             private WordNode current = first;
@@ -97,56 +97,52 @@ public class WordSalad implements Iterable <String> {
         return result.toString() + "]";
     }
 
-    // Method stubs to be completed for the assignment.
-    // See the assignment description for specification of their behaviour.
 
     public WordSalad[] distribute(int k) {
-        //error checking
-        if (k == 0 || k<0 || k>this.size()) {
-            return null;
+        if (k == 0 || k<0 ){//|| k>this.size()-1) {
+            throw new NullPointerException("Enter a valid block size");
         }
-        WordSalad[] s = new WordSalad[k];
+        WordSalad[] result = new WordSalad[k];
         for (int c = 0; c<k; c++) {
-            s[c] = new WordSalad();
+            result[c] = new WordSalad();
         }
         int g = 0;
         WordNode w = first;
         while (w != null) {
-            s[g].addLast(w.word);
+            result[g].addLast(w.word);
             w = w.next;
             g++;
             if (g == k) {
                 g = 0;
             }
         }
-        return s;
+        return result;
     }
 
 
     public WordSalad[] chop(int k) {
 	WordSalad[] result = new WordSalad[k];
 	int size = this.size()-1;
-	//error checking for more blocks than words or no blocks
-	if (k > size || k == 0){
-	    return null;
-	}
-	int rem = size % k;
+        int rem = size % k;
 	int s = size / k;
 	List<Integer> nums = new ArrayList<>();
-	for (int i=0;i<k;i++){
-	    nums.add(s);
+        
+	if (k > size || k <= 0){
+	    throw new NullPointerException("Enter a valid block size");
 	}
+        for (int i=0;i<k;i++){
+            nums.add(s);
+        }
 	for (int i=0;i<rem;i++){
-	    nums.set(i, nums.get(i)+1);
+            nums.set(i, nums.get(i)+1);
 	}
 	WordNode w = this.first;
 	int ind = 0;
-        
 	for (int i:nums){
 	    int g = i;
 	    result[ind] = new WordSalad();
 	    do{
-		result[ind].addLast(w.word); //w.word
+		result[ind].addLast(w.word);
 		w = w.next;
 		g-=1;
 	    }while (g>0);
@@ -155,23 +151,26 @@ public class WordSalad implements Iterable <String> {
         return result;
     }
     
-    //not required
-    //works as if distributing 
+    //not required ------------------------------------------------------------------
     public WordSalad[] split(int k) {
-        WordSalad[] dist = this.distribute(k);
         WordSalad[] result = new WordSalad[k];
-        List<String> r = new ArrayList<String>();
+        WordSalad[] s = new WordSalad[k];
+        WordSalad hold = this;
+        
         int ind = 0;
-        for (WordSalad salad : dist){
-            WordNode n = salad.first;
-            while (n != null){
-                r.add(n.word);
-                n = n.next;
+        while (hold != null){
+            s = hold.distribute(k);
+            if (ind > k){
+                break;
             }
-            result[ind] = new WordSalad(r);
-            r.clear();
-            ind++;
-            //need to set dist to  a WordSalad and distribute it and repeat the above code
+            for (String salad : s[ind]){
+                System.out.println("salad: "+salad);
+                result[ind] = new WordSalad();
+                result[ind].addLast(salad);
+            }
+            //s = Arrays.copyOfRange(s, 1, s.length);
+            hold = merge(s);
+            ind+=1;
         }
         return result;
     }
@@ -180,9 +179,8 @@ public class WordSalad implements Iterable <String> {
     //opposite of distribute
     public static WordSalad merge(WordSalad[] blocks) {
         WordSalad result = new WordSalad();
-        int c = 0;//overall counter
-        //calculating length of blocks
-        int len = 0;
+        int c = 0;
+        int len = 1;
         for (WordSalad s : blocks){
             for (String word : s){
                 len++;
@@ -206,12 +204,20 @@ public class WordSalad implements Iterable <String> {
     //required
     //opposite of chop
     public static WordSalad join(WordSalad[] blocks) {
-        return null;
+        WordSalad result = new WordSalad();
+        List<String> r = new ArrayList<String>();
+        for (WordSalad salad : blocks){
+            WordNode n = salad.first;
+            while (n != null){
+                result.addLast(n.word);
+                n = n.next;
+            }
+        }
+        return result;
     }
 
     //not required
     public static WordSalad recombine(WordSalad[] blocks, int k) {
         return null;
     }
-
 }
